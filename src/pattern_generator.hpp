@@ -6,7 +6,7 @@ class PatternGenerator {
 public:
     /// @param width Image width in pixels
     /// @param height Image height in pixels
-    void init(int width, int height);
+    PatternGenerator(int width, int height);
 
     /// Image data of size width*height pixels with values in [0;1]
     const std::vector<double>& pattern() const;
@@ -24,9 +24,9 @@ private:
         double m_increment;
     };
 
-    int m_width{0};
-    int m_height{0};
-    int m_size{0};
+    int m_width;
+    int m_height;
+    int m_size;
     std::vector<Scale> m_scales;
     std::vector<double> m_pattern;
 

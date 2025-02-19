@@ -7,10 +7,8 @@
 #include <random>
 #include <thread>
 
-void PatternGenerator::init(int width, int height) {
-    m_width = width;
-    m_height = height;
-    m_size = width * height;
+PatternGenerator::PatternGenerator(int width, int height)
+    : m_width{width}, m_height{height}, m_size{width * height} {
     m_pattern.resize(m_size);
 
     m_scales.push_back(Scale{100, 50, 0.05});

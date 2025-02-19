@@ -9,7 +9,7 @@ static SDL_Renderer* renderer = NULL;
 static constexpr int WINDOW_WIDTH = 640;
 static constexpr int WINDOW_HEIGHT = 480;
 
-static PatternGenerator generator;
+static PatternGenerator generator(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -22,8 +22,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-
-    generator.init(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     return SDL_APP_CONTINUE;
 }
