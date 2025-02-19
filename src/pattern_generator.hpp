@@ -1,56 +1,56 @@
 #pragma once
 
-#include "scale.hpp"
-
-#include <cstdlib>
 #include <vector>
 
-class PatternGenerator
-{
+class PatternGenerator {
 public:
-  /// Scales used to generate the pattern
-  std::vector<Scale> _scales;
+    /// @param width Image width in pixels
+    /// @param height Image height in pixels
+    void init(int width, int height);
 
-  /// @param width Image width in pixels
-  /// @param height Image height in pixels
-  PatternGenerator(std::size_t width, std::size_t height);
+    /// Image data of size width*height pixels with values in [0;1]
+    const std::vector<double>& pattern() const;
 
-  /// Image data of size width*height pixels with values in [0;1]
-  const std::vector<double>& pattern() const;
+    /// Generate next pattern step
+    void step();
 
-  /// Generate next pattern step
-  void generate();
-
-  /// Randomize image data
-  void randomize();
+    /// Randomize image data
+    void randomize();
 
 private:
-  const std::size_t _width;
-  const std::size_t _height;
-  const std::size_t _size;
-  std::vector<double> _pattern;
+    struct Scale {
+        int m_activatorRadius;
+        int m_inhibitorRadius;
+        double m_increment;
+    };
 
-  /// Normalize image data on the interval [0;1]
-  void normalize();
+    int m_width{0};
+    int m_height{0};
+    int m_size{0};
+    std::vector<Scale> m_scales;
+    std::vector<double> m_pattern;
 
-  /// Box blur
-  /// @param radius Blur radius
-  /// @param source Data to blur
-  /// @param destination Blurred data
-  void blur(
-    std::size_t radius, const std::vector<double>& source, std::vector<double>& destination) const;
+    /// Normalize image data on the interval [0;1]
+    void normalize();
 
-  /// Box blur, horizontal pass
-  /// @param radius Blur radius
-  /// @param source Data to blur
-  /// @param destination Blurred data
-  void blurHorizontal(
-    std::size_t radius, const std::vector<double>& source, std::vector<double>& destination) const;
+    /// Box blur
+    /// @param radius Blur radius
+    /// @param source Data to blur
+    /// @param destination Blurred data
+    void blur(
+        int radius, const std::vector<double>& source, std::vector<double>& destination) const;
 
-  /// Box blur, vertical pass
-  /// @param radius Blur radius
-  /// @param source Data to blur
-  /// @param destination Blurred data
-  void blurVertical(
-    std::size_t radius, const std::vector<double>& source, std::vector<double>& destination) const;
+    /// Box blur, horizontal pass
+    /// @param radius Blur radius
+    /// @param source Data to blur
+    /// @param destination Blurred data
+    void blurHorizontal(
+        int radius, const std::vector<double>& source, std::vector<double>& destination) const;
+
+    /// Box blur, vertical pass
+    /// @param radius Blur radius
+    /// @param source Data to blur
+    /// @param destination Blurred data
+    void blurVertical(
+        int radius, const std::vector<double>& source, std::vector<double>& destination) const;
 };

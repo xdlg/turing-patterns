@@ -1,8 +1,17 @@
-qt_add_executable(${PROJECT_NAME}
-  main.cpp
-  qml/qml.qrc
-  image_provider.cpp
-  pattern_generator.cpp
+add_executable(${PROJECT_NAME})
+
+target_sources(${PROJECT_NAME}
+PRIVATE 
+    main.cpp
+    pattern_generator.cpp
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Quick)
+target_link_libraries(${PROJECT_NAME}
+PRIVATE
+    SDL3::SDL3
+)
+
+target_compile_definitions(${PROJECT_NAME}
+PUBLIC
+    SDL_MAIN_USE_CALLBACKS
+)
