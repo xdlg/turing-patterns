@@ -9,14 +9,14 @@ public:
     /// @param height Image height in pixels
     PatternGenerator(int width, int height);
 
-    /// Image data of size width*height pixels with values in [0;1]
-    const std::vector<double>& pattern() const;
-
-    /// Generate next pattern step
-    void step();
-
     /// Randomize image data
     void randomize();
+
+    /// Generate next image step
+    void step();
+
+    /// Render image
+    void render();
 
 private:
     struct Scale {

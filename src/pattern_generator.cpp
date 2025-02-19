@@ -1,5 +1,7 @@
 #include "pattern_generator.hpp"
 
+#include "globals.h"
+
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -18,21 +20,9 @@ PatternGenerator::PatternGenerator(int width, int height)
     randomize();
 }
 
-const std::vector<double>& PatternGenerator::pattern() const {
-    return m_pattern;
-}
-
 void PatternGenerator::randomize() {
     std::generate(m_pattern.begin(), m_pattern.end(),
         [this]() { return m_random_distribution(m_random_engine); });
-}
-
-void PatternGenerator::normalize() {
-    double min = *std::min_element(m_pattern.begin(), m_pattern.end());
-    double max = *std::max_element(m_pattern.begin(), m_pattern.end());
-    double range = max - min;
-    std::transform(m_pattern.begin(), m_pattern.end(), m_pattern.begin(),
-        [min, range](double element) { return (element - min) / range; });
 }
 
 void PatternGenerator::step() {
@@ -69,6 +59,24 @@ void PatternGenerator::step() {
 
         normalize();
     }
+}
+
+void PatternGenerator::render() {
+    for (std::size_t x = 0; x < m_width; x++) {
+        for (std::size_t y = 0; y < m_height; y++) {
+            int color = static_cast<int>(255.0 * m_pattern[y * m_width + x]);
+            SDL_SetRenderDrawColor(globals::renderer, color, color, color, 255);
+            SDL_RenderPoint(globals::renderer, x, y);
+        }
+    }
+}
+
+void PatternGenerator::normalize() {
+    auto min = *std::min_element(m_pattern.begin(), m_pattern.end());
+    auto max = *std::max_element(m_pattern.begin(), m_pattern.end());
+    auto range = max - min;
+    std::transform(m_pattern.begin(), m_pattern.end(), m_pattern.begin(),
+        [min, range](auto element) { return (element - min) / range; });
 }
 
 void PatternGenerator::blur(
