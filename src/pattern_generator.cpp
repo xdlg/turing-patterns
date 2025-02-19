@@ -23,11 +23,8 @@ const std::vector<double>& PatternGenerator::pattern() const {
 }
 
 void PatternGenerator::randomize() {
-    std::random_device device;
-    std::default_random_engine engine(device());
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
     std::generate(m_pattern.begin(), m_pattern.end(),
-        [&distribution, &engine]() { return distribution(engine); });
+        [this]() { return m_random_distribution(m_random_engine); });
 }
 
 void PatternGenerator::normalize() {

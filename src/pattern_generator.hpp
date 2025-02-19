@@ -1,5 +1,6 @@
 #pragma once
 
+#include <random>
 #include <vector>
 
 class PatternGenerator {
@@ -29,6 +30,8 @@ private:
     int m_size;
     std::vector<Scale> m_scales;
     std::vector<double> m_pattern;
+    std::mt19937 m_random_engine{std::random_device{}()};
+    std::uniform_real_distribution<double> m_random_distribution{0.0, 1.0};
 
     /// Normalize image data on the interval [0;1]
     void normalize();
