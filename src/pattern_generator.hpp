@@ -1,59 +1,63 @@
 #pragma once
 
-#include <random>
+#include "texture_wrapper.h"
+
+#include <SDL3/SDL_render.h>
+
 #include <vector>
 
 class PatternGenerator {
 public:
-    /// @param width Image width in pixels
-    /// @param height Image height in pixels
+    /// @param w Image width in pixels
+    /// @param h Image height in pixels
     PatternGenerator(int width, int height);
 
-    /// Randomize image data
+    /// Initializes generator
+    bool init();
+
+    /// Randomizes image data
     void randomize();
 
-    /// Generate next image step
+    /// Generates next image step
     void step();
 
-    /// Render image
-    void render();
+    /// Renders image
+    bool render();
 
 private:
     struct Scale {
-        int m_activatorRadius;
-        int m_inhibitorRadius;
-        double m_increment;
+        int activatorRadius;
+        int inhibitorRadius;
+        double increment;
     };
 
-    int m_width;
-    int m_height;
-    int m_size;
+    int m_w;
+    int m_h;
     std::vector<Scale> m_scales;
     std::vector<double> m_pattern;
-    std::mt19937 m_random_engine{std::random_device{}()};
-    std::uniform_real_distribution<double> m_random_distribution{0.0, 1.0};
+    textureWrapper::unique_ptr_texture m_texture;
 
-    /// Normalize image data on the interval [0;1]
+    /// Normalizes image data on the interval [0;1]
     void normalize();
 
     /// Box blur
     /// @param radius Blur radius
     /// @param source Data to blur
     /// @param destination Blurred data
-    void blur(
-        int radius, const std::vector<double>& source, std::vector<double>& destination) const;
+    void blur(int radius, const std::vector<double>& source,
+        std::vector<double>& destination) const;
 
     /// Box blur, horizontal pass
     /// @param radius Blur radius
     /// @param source Data to blur
     /// @param destination Blurred data
-    void blurHorizontal(
-        int radius, const std::vector<double>& source, std::vector<double>& destination) const;
+    void blurHorizontal(int radius, const std::vector<double>& source,
+        std::vector<double>& destination) const;
 
     /// Box blur, vertical pass
     /// @param radius Blur radius
     /// @param source Data to blur
     /// @param destination Blurred data
-    void blurVertical(
-        int radius, const std::vector<double>& source, std::vector<double>& destination) const;
+    void blurVertical(int radius, const std::vector<double>& source,
+        std::vector<double>& destination) const;
 };
